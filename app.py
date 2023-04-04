@@ -2,7 +2,7 @@
 
 import time
 import os
-from flask import Flask, redirect, request, jsonify, send_file, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from model import resume_classification
 from flask_cors import CORS, cross_origin
 

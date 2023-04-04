@@ -19,13 +19,16 @@ def cleanResume(resumeText):
 
 def resume_classification(filename):  
     # Creating a pdf reader object
-    reader = PdfReader(open(filename, 'rb'))
+    file = open(filename, 'rb')
+    reader = PdfReader(file)
     text = ""
 
     # Extracting text from page
     for page in reader.pages:
         text = page.extract_text()
         text += cleanResume(text)
+
+    file.close()
 
     # Load all necessary models
     word_vectorizer = joblib.load(open('models/resume-word-vectorizer.sav', 'rb'))
