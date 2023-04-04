@@ -36,7 +36,7 @@ def resume_classification(filename):
     # Predict the resume vector with classifier model
     prediction = clf.predict(text_vector)
     
-    return le.inverse_transform(prediction)
+    return le.inverse_transform(prediction)[0]
 
 if __name__ == '__main__':
     print(resume_classification('test/resume-1.pdf'))
