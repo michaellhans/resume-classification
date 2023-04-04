@@ -21,16 +21,17 @@ def hello():
 def predict():
     response = {}
     try:
-        f = request.files['file']
-        file_location = 'test/' + f.filename[:-4] + '-' + str(int(time.time())) + '.pdf' 
-        f.save(file_location)
+        files = request.files.getlist('file')
+        data = []
+        for f in files:
+            file_name = f.filename[:-4] + '-' + str(int(time.time())) + '.pdf' 
+            file_location = 'test/' + file_name
+            f.save(file_location)
+            print(file_location)
+            role = resume_classification(file_location)
+            data.append({'id': file_name, 'role': role})
 
-        print(file_location)
-        role = resume_classification(file_location)
-        response = {
-            'status': '200',
-            'role': role
-        }
+        response['data'] = data
 
     except ValueError as e:
         response['error'] = str(e)
