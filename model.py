@@ -17,7 +17,10 @@ def cleanResume(resumeText):
     resumeText = re.sub('\s+', ' ', resumeText)  # remove extra whitespace
     return resumeText
 
-def resume_classification(filename):  
+def resume_classification(filename):
+    """
+    Classify the resume file into corresponding roles
+    """   
     # Creating a pdf reader object
     file = open(filename, 'rb')
     reader = PdfReader(file)
