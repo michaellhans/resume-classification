@@ -1,7 +1,5 @@
-from io import BytesIO
 import joblib
 import re
-import PyPDF2
 from PyPDF2 import PdfReader
 
 def cleanResume(resumeText):

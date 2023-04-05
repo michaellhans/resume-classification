@@ -14,7 +14,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/hello-world', methods=['GET'])
 @cross_origin()
 def hello():
-    return jsonify({'data': 'Hello World'})
+    return jsonify({'data': [{'id': "hello-12345", 'role': "World Designer"}]})
 
 @app.route('/predict', methods=['POST'])
 @cross_origin()
