@@ -45,5 +45,32 @@ def show_static_pdf(name: str):
     filepath = workingdir + '/test/'
     return send_from_directory(filepath, name)
 
+@app.route('/clean', methods=['POST'])
+@cross_origin()
+def clean():
+    password = request.form['pass']
+    if (password == 'if5230-23522011'):
+        workingdir = os.path.abspath(os.getcwd())
+        filepath = workingdir + '/test/'
+        for filename in os.listdir(filepath):
+            if ('resume-' not in filename):
+                os.remove(filepath + '/' + filename)
+
+        return jsonify({'status': 'SUCCESS'})
+
+    else:
+        return jsonify({'status': 'ACCESS DENIED'})
+        
+@app.route('/show-all')
+@cross_origin()
+def show_all_list():
+    workingdir = os.path.abspath(os.getcwd())
+    filepath = workingdir + '/test/'
+    response = []
+    for filename in os.listdir(filepath):
+        response.append(filename)
+    
+    return jsonify(response)
+
 if __name__ == '__main__':
     app.run(debug=DEV)
