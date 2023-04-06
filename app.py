@@ -70,7 +70,7 @@ def show_all_list():
     for filename in os.listdir(filepath):
         response.append(filename)
     
-    return jsonify(response)
+    return jsonify({'data': response})
 
 if __name__ == '__main__':
     app.run(debug=DEV)
