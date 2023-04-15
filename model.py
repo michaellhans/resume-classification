@@ -86,7 +86,7 @@ class Model:
             "name": info['name'],
             "path": info['path'],
             "predicted_role": info['predicted_role'],
-            "timestamp": datetime.datetime.now()
+            "timestamp": str(datetime.datetime.now())
         }
 
         self.database = self.database._append(data, ignore_index=True)

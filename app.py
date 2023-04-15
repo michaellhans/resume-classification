@@ -16,34 +16,35 @@ model = Model()
 @app.route('/hello-world', methods=['GET'])
 @cross_origin()
 def hello():
-    return jsonify({'data': [{'id': "hello-12345", 'role': "World Designer"}]})
+    dummy_data = {
+        'id': 0,
+        'name': 'Hello World',
+        'path': 'https://akademik.itb.ac.id',
+        'predicted_role': 'Java Developer',
+        'timestamp': '2023-04-15 10:51:38.843929'
+    }
+    return jsonify({'data': [dummy_data]})
 
 @app.route('/predict', methods=['POST'])
 @cross_origin()
 def predict():
     response = {}
-    try:
-        files = request.files.getlist('file')
-        data = []
-        for f in files:
-            file_name = f.filename[:-4] + '-' + str(int(time.time())) + '.pdf' 
-            file_location = 'test/' + file_name
-            f.save(file_location)
-            print(file_location)
-            role = model.resume_classification(file_location)
-            info = {
-                "name": f.filename[:-4],
-                "path": file_name,
-                "predicted_role": role
-            }
-            
-            data.append(model.save(info))
+    files = request.files.getlist('file')
+    data = []
+    for f in files:
+        file_name = f.filename[:-4] + '-' + str(int(time.time())) + '.pdf' 
+        file_location = 'test/' + file_name
+        f.save(file_location)
+        print(file_location)
+        role = model.resume_classification(file_location)
+        info = {
+            "name": f.filename[:-4],
+            "path": file_name,
+            "predicted_role": role
+        }
+        data.append(model.save(info))
 
-        response['data'] = data
-
-    except ValueError as e:
-        response['error'] = str(e)
-
+    response['data'] = data
     return jsonify(response)
 
 @app.route('/show/<name>')
@@ -70,23 +71,14 @@ def clean():
         for filename in os.listdir(filepath):
             if ('resume-' not in filename):
                 os.remove(filepath + '/' + filename)
-        
         model.reset()
-
         return jsonify({'status': 'SUCCESS'})
-
     else:
         return jsonify({'status': 'ACCESS DENIED'})
         
 @app.route('/show-all')
 @cross_origin()
 def show_all_list():
-    # workingdir = os.path.abspath(os.getcwd())
-    # filepath = workingdir + '/test/'
-    # response = []
-    # for filename in os.listdir(filepath):
-    #     response.append(filename)
-
     return jsonify({'data': pd.read_csv('data/data.csv').to_dict(orient='records')})
 
 if __name__ == '__main__':
