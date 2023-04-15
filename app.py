@@ -3,13 +3,14 @@
 import time
 import os
 from flask import Flask, request, jsonify, send_from_directory
-from model import resume_classification
+from model import Model
 from flask_cors import CORS, cross_origin
 
 DEV = os.getenv("FLASK_ENV", "development") == "development"
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+model = Model()
 
 @app.route('/hello-world', methods=['GET'])
 @cross_origin()
@@ -28,8 +29,14 @@ def predict():
             file_location = 'test/' + file_name
             f.save(file_location)
             print(file_location)
-            role = resume_classification(file_location)
-            data.append({'id': file_name, 'role': role})
+            role = model.resume_classification(file_location)
+            info = {
+                "name": f.filename[:-4],
+                "path": file_location,
+                "predicted_role": role
+            }
+            
+            data.append(model.save(info))
 
         response['data'] = data
 
@@ -45,6 +52,13 @@ def show_static_pdf(name: str):
     filepath = workingdir + '/test/'
     return send_from_directory(filepath, name)
 
+@app.route('/suggestions', methods=['POST'])
+@cross_origin()
+def suggestions():
+    job_desc = request.form['job_description']
+    suggestion_df = model.suggestions(job_desc)
+    return jsonify({'data': suggestion_df.to_dict(orient='records')})
+
 @app.route('/clean', methods=['POST'])
 @cross_origin()
 def clean():
@@ -55,6 +69,8 @@ def clean():
         for filename in os.listdir(filepath):
             if ('resume-' not in filename):
                 os.remove(filepath + '/' + filename)
+        
+        model.reset()
 
         return jsonify({'status': 'SUCCESS'})
 
@@ -64,13 +80,13 @@ def clean():
 @app.route('/show-all')
 @cross_origin()
 def show_all_list():
-    workingdir = os.path.abspath(os.getcwd())
-    filepath = workingdir + '/test/'
-    response = []
-    for filename in os.listdir(filepath):
-        response.append(filename)
-    
-    return jsonify({'data': response})
+    # workingdir = os.path.abspath(os.getcwd())
+    # filepath = workingdir + '/test/'
+    # response = []
+    # for filename in os.listdir(filepath):
+    #     response.append(filename)
+
+    return jsonify({'data': model.database.to_dict(orient='records')})
 
 if __name__ == '__main__':
     app.run(debug=DEV)
