@@ -56,7 +56,7 @@ class Model:
         suggestion_df = self.database.copy()
         full_text = []
         for _, row in suggestion_df.iterrows():
-            full_text.append(self.get_full_text(row['path']))
+            full_text.append(self.get_full_text('test/' + row['path']))
 
         full_text_vector = self.word_vectorizer.transform(full_text)
         job_desc_clean = self.cleanResume(job_desc)

@@ -32,7 +32,7 @@ def predict():
             role = model.resume_classification(file_location)
             info = {
                 "name": f.filename[:-4],
-                "path": file_location,
+                "path": file_name,
                 "predicted_role": role
             }
             
