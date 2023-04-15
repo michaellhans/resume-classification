@@ -55,6 +55,10 @@ class Model:
     def suggestions(self, job_desc):
         suggestion_df = pd.read_csv("data/data.csv")
         full_text = []
+
+        if (len(suggestion_df) == 0):
+            raise Exception("No resume stored in database. Please upload first")
+
         for _, row in suggestion_df.iterrows():
             full_text.append(self.get_full_text('test/' + row['path']))
 

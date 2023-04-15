@@ -58,8 +58,14 @@ def show_static_pdf(name: str):
 @cross_origin()
 def suggestions():
     job_desc = request.form['job_description']
-    suggestion_df = model.suggestions(job_desc)
-    return jsonify({'data': suggestion_df.to_dict(orient='records')})
+    try:
+        suggestion_df = model.suggestions(job_desc)
+        return jsonify({'data': suggestion_df.to_dict(orient='records')})
+
+    except Exception as e:
+        message = str(e)
+        return jsonify({'message': message}), 404
+        
 
 @app.route('/clean', methods=['POST'])
 @cross_origin()
