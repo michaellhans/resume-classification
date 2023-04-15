@@ -4,6 +4,7 @@ import time
 import os
 from flask import Flask, request, jsonify, send_from_directory
 from model import Model
+import pandas as pd
 from flask_cors import CORS, cross_origin
 
 DEV = os.getenv("FLASK_ENV", "development") == "development"
@@ -56,7 +57,7 @@ def show_static_pdf(name: str):
 @cross_origin()
 def suggestions():
     job_desc = request.form['job_description']
-    suggestion_df = model.suggestions(job_desc)
+    suggestion_df = pd.read_csv("data/data.csv")
     return jsonify({'data': suggestion_df.to_dict(orient='records')})
 
 @app.route('/clean', methods=['POST'])

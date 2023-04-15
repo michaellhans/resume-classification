@@ -53,7 +53,7 @@ class Model:
         return self.le.inverse_transform(prediction)[0]
 
     def suggestions(self, job_desc):
-        suggestion_df = self.database.copy()
+        suggestion_df = pd.read_csv("data/data.csv")
         full_text = []
         for _, row in suggestion_df.iterrows():
             full_text.append(self.get_full_text('test/' + row['path']))
