@@ -41,16 +41,20 @@ class Model:
         return text
 
 
-    def resume_classification(self, filename):
+    def resume_classification(self, paths):
         """
         Classify the resume file into corresponding roles
-        """   
-        text_vector = self.word_vectorizer.transform([self.get_full_text(filename)])
+        """
+        texts = []
+        for path in paths:
+          texts.append(self.get_full_text(path))
+        
+        text_vector = self.word_vectorizer.transform(texts)   
 
         # Predict the resume vector with classifier model
         prediction = self.clf.predict(text_vector)
         
-        return prediction[0]
+        return prediction
     
     def suggestions(self, job_desc):
         suggestion_df = pd.read_csv("data/data.csv")
