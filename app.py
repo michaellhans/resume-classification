@@ -31,16 +31,22 @@ def predict():
     response = {}
     files = request.files.getlist('file')
     data = []
+    files_location = []
+    files_name = []
     for f in files:
         file_name = f.filename[:-4] + '-' + str(int(time.time())) + '.pdf' 
         file_location = 'test/' + file_name
         f.save(file_location)
         print(file_location)
-        role = model.resume_classification(file_location)
+        files_location.append(file_location)
+        files_name.append(f.filename[:-4])
+    
+    role = model.resume_classification(files_location)
+    for i in range(len(files_location)):
         info = {
-            "name": f.filename[:-4],
-            "path": file_name,
-            "predicted_role": role
+            "name": files_name[i],
+            "path": files_location[i][5:],
+            "predicted_role": role[i]
         }
         data.append(model.save(info))
 

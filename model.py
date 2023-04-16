@@ -11,7 +11,7 @@ class Model:
         self.database = pd.read_csv("data/data.csv")
         self.word_vectorizer = joblib.load(open('models/resume-word-vectorizer.sav', 'rb'))
         self.le = joblib.load(open('models/resume-label-encoder.sav', 'rb'))
-        self.clf = joblib.load('models/resume-classification.sav')
+        self.clf = joblib.load('models/resume-classification-dtl.sav')
     
     def cleanResume(self, resumeText):
         """
@@ -50,8 +50,8 @@ class Model:
         # Predict the resume vector with classifier model
         prediction = self.clf.predict(text_vector)
         
-        return self.le.inverse_transform(prediction)[0]
-
+        return prediction[0]
+    
     def suggestions(self, job_desc):
         suggestion_df = pd.read_csv("data/data.csv")
         full_text = []
