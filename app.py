@@ -28,7 +28,6 @@ def hello():
 @app.route('/predict', methods=['POST'])
 @cross_origin()
 def predict():
-    response = {}
     files = request.files.getlist('file')
     data = []
     files_location = []
@@ -50,8 +49,7 @@ def predict():
         }
         data.append(model.save(info))
 
-    response['data'] = data
-    return jsonify(response)
+    return jsonify({'data': data})
 
 @app.route('/show/<name>')
 @cross_origin()

@@ -54,7 +54,7 @@ class Model:
         # Predict the resume vector with classifier model
         prediction = self.clf.predict(text_vector)
         
-        return prediction
+        return self.le.inverse_transform(prediction)
     
     def suggestions(self, job_desc):
         suggestion_df = pd.read_csv("data/data.csv")
