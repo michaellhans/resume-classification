@@ -9,9 +9,9 @@ class Model:
     def __init__(self):
         # Load all necessary models
         self.database = pd.read_csv("data/data.csv")
-        self.word_vectorizer = joblib.load(open('models/resume-word-vectorizer.sav', 'rb'))
-        self.le = joblib.load(open('models/resume-label-encoder.sav', 'rb'))
-        self.clf = joblib.load('models/resume-classification-dtl.sav')
+        self.word_vectorizer = joblib.load(open('models/resume-classification-word-vectorizer.joblib', 'rb'))
+        self.le = joblib.load(open('models/resume-classification-label-encoder.joblib', 'rb'))
+        self.clf = joblib.load(open('models/resume-classification-linear-svc.joblib', 'rb'))
     
     def cleanResume(self, resumeText):
         """
