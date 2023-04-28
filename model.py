@@ -10,6 +10,7 @@ class Model:
         # Load all necessary models
         self.database = pd.read_csv("data/data.csv")
         self.word_vectorizer = joblib.load(open('models/resume-classification-word-vectorizer.joblib', 'rb'))
+        self.suggestion_vectorizer = joblib.load(open('models/resume-classification-suggestion-vectorizer.joblib', 'rb'))
         self.le = joblib.load(open('models/resume-classification-label-encoder.joblib', 'rb'))
         self.clf = joblib.load(open('models/resume-classification-linear-svc.joblib', 'rb'))
     
@@ -66,9 +67,9 @@ class Model:
         for _, row in suggestion_df.iterrows():
             full_text.append(self.get_full_text('test/' + row['path']))
 
-        full_text_vector = self.word_vectorizer.transform(full_text)
+        full_text_vector = self.suggestion_vectorizer.transform(full_text)
         job_desc_clean = self.cleanResume(job_desc)
-        job_desc_vector = self.word_vectorizer.transform([job_desc_clean])
+        job_desc_vector = self.suggestion_vectorizer.transform([job_desc_clean])
 
         # Compute cosine similarity matrix
         cosine_sim = cosine_similarity(job_desc_vector, full_text_vector)
