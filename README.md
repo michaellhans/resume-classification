@@ -1,14 +1,14 @@
 # Resume Classification
 
-Resume Classification API untuk melakukan klasifikasi resume.
+Resume Classification API to classify resumes and show some suggestions based on the job description.
 
 ## Getting Started
 
-Instruksi-instruksi berikut ini akan membimbing Anda dalam tahap instalasi aplikasi dan cara menjalankannya.
+The following instructions will guide you through the application installation stage and how to run it.
 
 ### Prerequisites
 
-Berikut ini adalah persiapan environment yang dibutuhkan untuk menjalankan aplikasi.
+The following is the environment preparation needed to run the application.
 
 ```
 - Flask Framework for Integration
@@ -23,7 +23,9 @@ pip install -r requirements.txt
 ```
 
 ## How to Run Program
-1. Lorem ipsum dolor
+1. Run `python app.py` from the root directory
+2. Check the API documentation [here](https://docs.google.com/document/d/1O6zXF8STjMEs-aMxf2xVmAelooR5jwPtNQ9lwu8NA_M/edit?usp=sharing)
+3. You can use the Postman application or create simple UI to test this API
 
 ## Built With
 
@@ -34,7 +36,3 @@ pip install -r requirements.txt
 
 - 23522011 / Michael Hans
 - 23522008 / Neng Ayu Herawati
-
-## Acknowledgments
-
-* Dosen IF5230 Aplikasi Inteligensi Buatan untuk Enterprise, Masayu Leylia Khodra
