@@ -1,6 +1,6 @@
 import joblib
 import re
-from PyPDF2 import PdfReader
+import fitz
 import pandas as pd
 import datetime
 from sklearn.metrics.pairwise import cosine_similarity
@@ -28,19 +28,13 @@ class Model:
         return resumeText
     
     def get_full_text(self, filename):
-        # Creating a pdf reader object
-        file = open(filename, 'rb')
-        reader = PdfReader(file)
-        text = ""
-
-        # Extracting text from page
-        for page in reader.pages:
-            text = page.extract_text()
-            text += self.cleanResume(text)
-        file.close()
-
-        return text
-
+        doc = fitz.open(filename)
+        full_text = ""
+        for page in doc:
+          text = page.get_text()
+          full_text += " " + self.cleanResume(text)
+        
+        return full_text
 
     def resume_classification(self, paths):
         """
